@@ -7,15 +7,13 @@ import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile/Profile";
 import Dialogs from "./components/Dialogs/Dialogs";
-/*import {PostsType} from "./index";
-import {DialogsType} from "./index";
-import {MessagesType} from "./index";*/
 import {RootStateType} from './redux/state';
-import {addPost} from './redux/state'
+
 
 export type AppType = {
     appState: RootStateType
     addPost: (postText: string) => void
+    updateNewPostText: (updatedPostText: string) => void
 }
 
 
@@ -46,6 +44,7 @@ const App = (props: AppType) => {
                     <Route path='/profile' render={() => <Profile
                         profilePage={props.appState.profilePage}
                         addPost = {props.addPost}
+                        updateNewPostText={props.updateNewPostText}
                     />}/>
                         {/*posts={props.appState.profilePage.posts}/>}/>*/}
 
