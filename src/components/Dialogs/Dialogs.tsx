@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './Dialogs.module.css';
 import {NavLink} from "react-router-dom";
 import DialogItem from "./DialogItem/DialogItem";
@@ -8,21 +8,24 @@ import {DialogsPageType} from "../../redux/state";
 
 export type DialogsPropsType = {
     dialogsPage: DialogsPageType
+    addMessage: (messageText: string) => void
+    newMessageText: string
+    updateNewMessageText: (newMessageText: string) => void
 }
 
 const Dialogs = (props: DialogsPropsType) => {
-
 
     let dialogsElements = props.dialogsPage.dialogs.map((d) => <DialogItem name={d.name} id={d.id}/>);
     let messagesElements = props.dialogsPage.messages.map((m) => <Message message={m.message}/>);
 
 
-
-    let newMessageElement = React.createRef<HTMLTextAreaElement>();
     const addMessage = () => {
-        alert(newMessageElement.current?.value)
+        props.addMessage(props.newMessageText);
     }
 
+    const onMessageChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        props.updateNewMessageText(event.currentTarget.value)
+    }
 
 
     return (
@@ -44,11 +47,8 @@ const Dialogs = (props: DialogsPropsType) => {
             </div>
 
 
-
-
-
-
-            <div><textarea ref={newMessageElement}></textarea></div>
+            <div><textarea value={props.newMessageText}
+                           onChange={onMessageChangeHandler}/></div>
             <div><button onClick={addMessage}>Add message</button></div>
         </div>
 

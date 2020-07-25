@@ -14,18 +14,18 @@ export type PostsTypeArray = {
 const MyPosts = (props: PostsTypeArray) => {
 
     let postsElements =
-       props.posts.map ((p) => <Post message={p.message} likesCount={p.likesCount}/>);
+        props.posts.map((p) => <Post message={p.message} likesCount={p.likesCount}/>);
 
 
     /*let newPostElement = React.createRef<HTMLTextAreaElement>();*/
 
 
     let addPost = () => {
-            props.addPost(props.newPostText);
+        props.addPost(props.newPostText);
     }
 
     let onPostChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-            props.updateNewPostText(event.currentTarget.value);
+        props.updateNewPostText(event.currentTarget.value);
 
     }
 
@@ -33,14 +33,10 @@ const MyPosts = (props: PostsTypeArray) => {
         <div className={s.postsBlock}>
             <h3>My posts</h3>
             <div>
-                <div>
-                    <textarea onChange={onPostChangeHandler}
-                              value={props.newPostText}/>
-                </div>
-
-                <div>
-                    <button onClick={ addPost }>Add post</button>
-                </div>
+                    <textarea value={props.newPostText}
+                              onChange={onPostChangeHandler}
+                    />
+                    <button onClick={addPost}>Add post</button>
             </div>
             <div className={s.posts}>
                 {postsElements}

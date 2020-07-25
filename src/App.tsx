@@ -14,42 +14,37 @@ export type AppType = {
     appState: RootStateType
     addPost: (postText: string) => void
     updateNewPostText: (updatedPostText: string) => void
+    addMessage: (messageText: string) => void
+    updateNewMessageText: (newText: string) => void
 }
 
-
-/*
-export type AppType = {
-    posts: Array<PostsType>
-    dialogs: Array<DialogsType>
-    messages: Array<MessagesType>
-}
-*/
 
 const App = (props: AppType) => {
 
     return (
+        <div className='app-wrapper'>
+            <Header/>
+            <Navbar/>
+            <div className='app-wrapper-content'>
 
-            <div className='app-wrapper'>
-                <Header/>
-                <Navbar/>
-                <div className='app-wrapper-content'>
+                <Route path='/dialogs' render={() => <Dialogs
 
-                    <Route path='/dialogs' render={() => <Dialogs
+                    /*dialogs={props.appState.dialogsPage.dialogs}
+                     messages={props.appState.dialogsPage.messages}*/
 
-                       /*dialogs={props.appState.dialogsPage.dialogs}
-                        messages={props.appState.dialogsPage.messages}*/
+                    dialogsPage={props.appState.dialogsPage}
+                    addMessage={props.addMessage}
+                    newMessageText={props.appState.dialogsPage.newMessageText}
+                    updateNewMessageText={props.updateNewMessageText}
+                />}/>
 
-                        dialogsPage={props.appState.dialogsPage}/>}/>
-
-                    <Route path='/profile' render={() => <Profile
-                        profilePage={props.appState.profilePage}
-                        addPost = {props.addPost}
-                        updateNewPostText={props.updateNewPostText}
-                    />}/>
-                        {/*posts={props.appState.profilePage.posts}/>}/>*/}
-
-                </div>
+                <Route path='/profile' render={() => <Profile
+                    profilePage={props.appState.profilePage}
+                    addPost={props.addPost}
+                    updateNewPostText={props.updateNewPostText}
+                />}/>
             </div>
+        </div>
 
     );
 }
