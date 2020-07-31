@@ -2,7 +2,6 @@ import React from 'react';
 //import ReactDOM from 'react-dom';
 import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom';
-//import state from './redux/state';
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile/Profile";

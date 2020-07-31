@@ -1,4 +1,10 @@
-import {rerenderEntireTree} from "../render";
+let rerenderEntireTree = () => {
+    console.log('State changed');
+}
+
+export const subscribe = (observer: () => void) => {
+    rerenderEntireTree = observer;
+}
 
 export type PostsType = {
     id: number
@@ -64,14 +70,13 @@ export let addPost = (/*postText: string*/) => {
     };
     state.profilePage.posts.push(newPost);
     state.profilePage.newPostText = '';
-    rerenderEntireTree(state);
+    rerenderEntireTree();
 }
 
 export let updateNewPostText = (newText: string) => {
     state.profilePage.newPostText = newText;
-    rerenderEntireTree(state);
+    rerenderEntireTree();
 }
-
 
 export let addMessage = (/*messageText: string*/) => {
     const newMessage: MessagesType = {
@@ -80,12 +85,12 @@ export let addMessage = (/*messageText: string*/) => {
     };
     state.dialogsPage.messages.push(newMessage);
     state.dialogsPage.newMessageText = '';
-    rerenderEntireTree(state);
+    rerenderEntireTree();
 }
 
 export let updateNewMessageText = (newMessageText: string) => {
     state.dialogsPage.newMessageText = newMessageText;
-    rerenderEntireTree(state);
+    rerenderEntireTree();
 }
 
 
