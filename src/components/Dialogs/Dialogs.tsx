@@ -7,9 +7,13 @@ import Message from "./Message/Message";
 import {
     ActionsTypes,
     DialogsPageType,
-    sendMessageCreator,
-    updateNewMessageBodyCreator,
+   /* sendMessageCreator,
+    updateNewMessageBodyCreator,*/
 } from "../../redux/state";
+import {
+    sendMessageCreator,
+    updateNewMessageBodyCreator
+} from "../../redux/dialogs-reducer"
 
 export type DialogsPropsType = {
     dialogsPage: DialogsPageType

@@ -1,7 +1,11 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import {ActionsTypes, addPostActionCreator, PostsType, updateNewPostTextActionCreator} from "../../../redux/state";
+import {ActionsTypes, PostsType} from "../../../redux/state";
+import {
+    addPostActionCreator,
+    updateNewPostTextActionCreator
+} from "../../../redux/profile-reducer"
 
 export type PostsTypeArray = {
     posts: Array<PostsType>
@@ -26,7 +30,7 @@ const MyPosts = (props: PostsTypeArray) => {
     }
 
     let onPostChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-debugger
+
 
         props.dispatch(updateNewPostTextActionCreator(event.currentTarget.value));
 

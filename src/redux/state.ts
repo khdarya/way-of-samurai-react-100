@@ -1,3 +1,6 @@
+import profileReducer, {addPostActionCreator, updateNewPostTextActionCreator} from "./profile-reducer";
+import dialogsReducer, {sendMessageCreator, updateNewMessageBodyCreator} from "./dialogs-reducer";
+
 export type PostsType = {
     id: number
     message: string
@@ -59,21 +62,21 @@ export type ActionsTypes = ReturnType<typeof addPostActionCreator>
     | ReturnType<typeof updateNewMessageBodyCreator>
 
 
-export const addPostActionCreator = (newPostText: string)/*: AddPostActionType*/ => {
+/*export const addPostActionCreator = (newPostText: string)/!*: AddPostActionType*!/ => {
     return {
         type: 'ADD-POST',
         newPostText: newPostText
     } as const
 }
 
-export const updateNewPostTextActionCreator = (newText: string)/*: UpdateNewPostTextActionType*/ => {
+export const updateNewPostTextActionCreator = (newText: string)/!*: UpdateNewPostTextActionType*!/ => {
     return {
         type: 'UPDATE-NEW-POST-TEXT',
         newText: newText
     } as const
-}
+}*/
 
-export const sendMessageCreator = (newMessageText: string) => {
+/*export const sendMessageCreator = (newMessageText: string) => {
     return {
         type: 'SEND-MESSAGE',
         newMessageText: newMessageText
@@ -85,7 +88,7 @@ export const updateNewMessageBodyCreator = (newMessageText: string) => {
         type: 'UPDATE-NEW-MESSAGE-BODY',
         newMessageText: newMessageText
     } as const
-}
+}*/
 
 
 let store: StoreType = {
@@ -116,7 +119,8 @@ let store: StoreType = {
                 {id: 5, message: 'Yo'}
             ],
             newMessageText: '',
-        }
+        },
+      //  sidebar: {}
     },
     _rerenderEntireTree() {
         console.log('State changed');
@@ -159,10 +163,16 @@ let store: StoreType = {
       },*/
 
     dispatch(action) {
-        if (action.type === 'ADD-POST') {
+
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+
+        this._rerenderEntireTree();
+
+/*        if (action.type === 'ADD-POST') {
             const newPost: PostsType = {
                 id: new Date().getTime(),
-                message: action.newPostText, /*this._state.profilePage.newPostText,*/
+                message: action.newPostText, /!*this._state.profilePage.newPostText,*!/
                 likesCount: 0
             };
             this._state.profilePage.posts.push(newPost);
@@ -183,7 +193,7 @@ let store: StoreType = {
         } else if (action.type === 'UPDATE-NEW-MESSAGE-BODY') {
             this._state.dialogsPage.newMessageText = action.newMessageText;
             this._rerenderEntireTree();
-        }
+        }*/
     }
 
 }
