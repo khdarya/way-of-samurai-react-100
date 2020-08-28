@@ -1,29 +1,49 @@
 import {InferActionsTypes} from "./redux-store";
 
+export type DialogsPropType = {
+    id: number
+    name: string
+}
+
+export type MessagesPropType = {
+    id: number
+    message: string
+}
+
 let initialState = {
-        dialogs: [
-            {id: 1, name: 'Dimych'},
-            {id: 2, name: 'Andrey'},
-            {id: 3, name: 'Sveta'},
-            {id: 4, name: 'Sasha'},
-            {id: 5, name: 'Viktor'},
-            {id: 6, name: 'Valera'}
-        ],
-        messages: [
-            {id: 1, message: 'Hi, how are you?'},
-            {id: 2, message: 'How is your IT'},
-            {id: 3, message: 'Yo'},
-            {id: 4, message: 'Yo'},
-            {id: 5, message: 'Yo'}
-        ],
-        newMessageText: '',
-    }
+    dialogs: [
+        {id: 1, name: 'Dimych'},
+        {id: 2, name: 'Andrey'},
+        {id: 3, name: 'Sveta'},
+        {id: 4, name: 'Sasha'},
+        {id: 5, name: 'Viktor'},
+        {id: 6, name: 'Valera'}
+    ] as Array<DialogsPropType>,
+    messages: [
+        {id: 1, message: 'Hi, how are you?'},
+        {id: 2, message: 'How is your IT'},
+        {id: 3, message: 'Yo'},
+        {id: 4, message: 'Yo'},
+        {id: 5, message: 'Yo'}
+    ] as Array<MessagesPropType>,
+    newMessageText: '',
+}
 
 type InitialStateType = typeof initialState
 type ActionsTypes = InferActionsTypes<typeof actions>
 
 const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
+        case 'SEND-MESSAGE': {
+            let newMessage = {
+                id: new Date().getTime(),
+                message: action.message
+            };
+            return {...state, messages: [newMessage, ...state.messages]}
+        }
+        case 'UPDATE-NEW-MESSAGE-BODY': {
+            return {...state, newMessageText: action.newMessageText}
+        }
 
 
         // case SEND_MESSAGE:
@@ -59,8 +79,9 @@ const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStat
     return state;
 }
 
-const actions = {
-
+export const actions = {
+    sendMessageActionCreator: (message: string) => ({type: 'SEND-MESSAGE', message} as const),
+    updateNewMessageBodyActionCreator: (newMessageText: string) => ({type: 'UPDATE-NEW-MESSAGE-BODY', newMessageText} as const)
 }
 
 // export const sendMessageCreator = (newMessageText: string) => {
