@@ -28,7 +28,7 @@ const MyPostsContainer = (props: PropsType) => {
     )
 }
 
-const mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStateType => {
     return {
         newPostText: state.profilePage.newPostText,
         posts: state.profilePage.posts

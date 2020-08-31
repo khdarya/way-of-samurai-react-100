@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import s from './Dialogs.module.css';
-import {MessagesPropType} from "../../redux/dialogs-reducer";
+import {DialogsPropType, MessagesPropType} from "../../redux/dialogs-reducer";
 import {Message} from "./Message/Message";
 import {DialogItem} from "./DialogItem/DialogItem";
 
@@ -10,11 +10,13 @@ export type DialogsPropsType = {
     newMessageText: string
     sendMessage: (message: string) => void
     updateNewMessageBody: (newMessageText: string) => void
+
+    dialogs: Array<DialogsPropType>
 }
 
 const Dialogs = (props: DialogsPropsType) => {
 
-    const {messages, newMessageText, sendMessage, updateNewMessageBody} = props
+    const {messages, newMessageText, sendMessage, updateNewMessageBody, dialogs} = props
 
     const addMessage = messages.map(m => {
         return <Message key={m.id} message={m.message} />
@@ -29,8 +31,9 @@ const Dialogs = (props: DialogsPropsType) => {
     return (
         <div className={s.dialogs}>
             <div className={s.dialogsItems}>
-
-
+                {
+             dialogs.map(dialogs => <DialogItem key={dialogs.id} name={dialogs.name} id={dialogs.id}/>)
+                }
             </div>
             <div className={s.messages}>
                 {addMessage}

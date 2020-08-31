@@ -37,14 +37,13 @@ const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStat
         case 'SEND-MESSAGE': {
             let newMessage = {
                 id: new Date().getTime(),
-                message: action.message
+                message: action.text
             };
             return {...state, messages: [newMessage, ...state.messages]}
         }
         case 'UPDATE-NEW-MESSAGE-BODY': {
             return {...state, newMessageText: action.newMessageText}
         }
-
 
         // case SEND_MESSAGE:
         //     let newMessage: MessagesType = {
@@ -80,7 +79,7 @@ const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStat
 }
 
 export const actions = {
-    sendMessageActionCreator: (message: string) => ({type: 'SEND-MESSAGE', message} as const),
+    sendMessageActionCreator: (text: string) => ({type: 'SEND-MESSAGE', text} as const),
     updateNewMessageBodyActionCreator: (newMessageText: string) => ({type: 'UPDATE-NEW-MESSAGE-BODY', newMessageText} as const)
 }
 

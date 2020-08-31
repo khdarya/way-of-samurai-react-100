@@ -1,6 +1,6 @@
 import React from 'react';
 import Dialogs from "./Dialogs";
-import {MessagesPropType} from "../../redux/dialogs-reducer";
+import {DialogsPropType, MessagesPropType} from "../../redux/dialogs-reducer";
 import {AppStateType} from "../../redux/redux-store";
 import {connect} from "react-redux";
 import {actions} from "../../redux/dialogs-reducer";
@@ -8,6 +8,7 @@ import {actions} from "../../redux/dialogs-reducer";
 type MapStateType = {
     newMessageText: string
     messages: Array<MessagesPropType>
+    dialogs: Array<DialogsPropType>
 }
 type MapDispatchType = {
     sendMessage: (message: string) => void
@@ -18,7 +19,7 @@ type PropsType = OwnerType & MapDispatchType & MapStateType
 
 export const DialogsContainer = (props: PropsType) => {
 
-    const {messages, newMessageText, sendMessage, updateNewMessageBody} = props
+    const {messages, newMessageText, sendMessage, updateNewMessageBody, dialogs} = props
 
     return (
         <Dialogs
@@ -26,14 +27,17 @@ export const DialogsContainer = (props: PropsType) => {
             newMessageText={newMessageText}
             sendMessage={sendMessage}
             updateNewMessageBody={updateNewMessageBody}
+
+            dialogs={dialogs}
         />
     )
 }
 
-const mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStateType => {
     return {
         newMessageText: state.dialogsPage.newMessageText,
-        messages: state.dialogsPage.messages
+        messages: state.dialogsPage.messages,
+        dialogs: state.dialogsPage.dialogs
     }
 }
 
