@@ -39,7 +39,9 @@ const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStat
                 id: new Date().getTime(),
                 message: action.text
             };
-            return {...state, messages: [newMessage, ...state.messages]}
+            return {...state,
+                newMessageText: '',
+                messages: [newMessage, ...state.messages]}
         }
         case 'UPDATE-NEW-MESSAGE-BODY': {
             return {...state, newMessageText: action.newMessageText}
