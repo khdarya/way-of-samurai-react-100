@@ -3,6 +3,7 @@ import {InferActionsTypes} from "./redux-store";
 
 export type UsersPropType = {
     id: number
+    avatar: string
     followed: boolean
     fullName: string
     status: string
@@ -15,9 +16,18 @@ type locationType = {
 
 let initialState = {
     users: [
-        {id: 1, followed: false, fullName: 'Dmitry', status: 'I am a boss', location: {city: 'Minsk', country: 'Belarus'}},
-        {id: 2, followed: true, fullName: 'Sasha', status: 'I am a boss too', location: {city: 'Moscow', country: 'Russia'}},
-        {id: 3, followed: false, fullName: 'Andrew', status: 'I am a boss too', location: {city: 'Kiev', country: 'Ukraine'}},
+        // {
+        //     id: 1, avatar: 'https://www.iconfinder.com/data/icons/business-avatar-1/512/2_avatar-128.png',
+        //     followed: false, fullName: 'Dmitry', status: 'I am a boss', location: {city: 'Minsk', country: 'Belarus'}
+        // },
+        // {
+        //     id: 2, avatar: 'https://www.iconfinder.com/data/icons/business-avatar-1/512/7_avatar-128.png',
+        //     followed: true, fullName: 'Sasha', status: 'I am a boss too', location: {city: 'Moscow', country: 'Russia'}
+        // },
+        // {
+        //     id: 3, avatar: 'https://www.iconfinder.com/data/icons/business-avatar-1/512/10_avatar-128.png',
+        //     followed: false, fullName: 'Andrew', status: 'I am a boss too', location: {city: 'Kiev', country: 'Ukraine'}
+        // },
     ] as Array<UsersPropType>
 }
 
@@ -31,12 +41,12 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
         case "FOLLOW":
             return {
                 ...state,
-               // users: [...state.users],
+                // users: [...state.users],
                 users: state.users.map(u => {
-                    if(u.id === action.userId) {
+                    if (u.id === action.userId) {
                         return {...u, followed: true}
                     }
-                   return u;
+                    return u;
                 })
             }
 
@@ -45,7 +55,7 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
                 ...state,
                 // users: [...state.users],
                 users: state.users.map(u => {
-                    if(u.id === action.userId) {
+                    if (u.id === action.userId) {
                         return {...u, followed: false}
                     }
                     return u;
