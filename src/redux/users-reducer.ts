@@ -5,9 +5,13 @@ export type UsersPropType = {
     id: number
     avatar: string
     followed: boolean
-    fullName: string
+    name: string
     status: string
     location: locationType
+    photo: {
+        small: string
+        large: string
+    }
 }
 type locationType = {
     city: string
