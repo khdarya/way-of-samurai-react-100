@@ -15,14 +15,19 @@ let Users = (props: UsersPropsType) => {
 
     const {users, followUsers, unfollowUsers, setUsers} = props;
 
-    if (users.length === 0) {
-        axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-            setUsers(response.data.items)
-        })
+    let getUsers = () => {
+
+
+        if (users.length === 0) {
+            axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+                setUsers(response.data.items)
+            })
+        }
     }
 
     return (
         <div>
+            <button onClick={getUsers}> Get Users</button>
             {
                 users.map(u => <div key={u.id}>
                     <span>
