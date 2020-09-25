@@ -12,9 +12,12 @@ export type UsersPropsType = {
 }
 
 class Users extends React.Component<UsersPropsType, any> {
+
     constructor(props: UsersPropsType) {
         super(props);
+    }
 
+    componentDidMount() {
         // if (this.props.users.length === 0) {
         axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
             this.props.setUsers(response.data.items)
@@ -34,8 +37,8 @@ class Users extends React.Component<UsersPropsType, any> {
                     this.props.users.map(u => <div key={u.id}>
                     <span>
                         <div>
-                            {/*<img src={ u.photo.small != null ? u.photo.small : usersPhoto } className={styles.userPhoto} />*/}
-                            <img src={usersPhoto} className={styles.userPhoto}/>
+                            <img src={ u.photos.small != null ? u.photos.small : usersPhoto } className={styles.userPhoto} />
+                            {/*<img src={usersPhoto} className={styles.userPhoto}/>*/}
                         </div>
                         <div>
                             {u.followed

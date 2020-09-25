@@ -8,7 +8,7 @@ export type UsersPropType = {
     name: string
     status: string
     location: locationType
-    photo: {
+    photos: {
         small: string
         large: string
     }
