@@ -32,7 +32,10 @@ let initialState = {
         //     id: 3, avatar: 'https://www.iconfinder.com/data/icons/business-avatar-1/512/10_avatar-128.png',
         //     followed: false, fullName: 'Andrew', status: 'I am a boss too', location: {city: 'Kiev', country: 'Ukraine'}
         // },
-    ] as Array<UsersPropType>
+    ] as Array<UsersPropType>,
+    pageSize: 88,
+    totalUsersCount: 0,
+    currentPage: 2
 }
 
 type InitialStateType = typeof initialState
@@ -45,7 +48,6 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
         case "FOLLOW":
             return {
                 ...state,
-                // users: [...state.users],
                 users: state.users.map(u => {
                     if (u.id === action.userId) {
                         return {...u, followed: true}
@@ -67,7 +69,13 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
             }
 
         case "SET-USERS": {
-            return {...state, users: [...state.users, ...action.users]}
+            return {...state, users: action.users}
+        }
+        case "SET-CURRENT-PAGE": {
+            return {...state, currentPage: action.currentPage}
+        }
+        case "SET-TOTAL-USERS-COUNT": {
+            return {...state, totalUsersCount: action.count}
         }
         default:
             return state;
@@ -79,7 +87,10 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
 export const actions = {
     followActionCreator: (userId: number) => ({type: 'FOLLOW', userId} as const),
     unfollowActionCreator: (userId: number) => ({type: 'UNFOLLOW', userId} as const),
-    setUsersAC: (users: Array<any>) => ({type: 'SET-USERS', users} as const)
+    setUsersAC: (users: Array<any>) => ({type: 'SET-USERS', users} as const),
+
+    setCurrentPageAC: (currentPage: number) => ({type: "SET-CURRENT-PAGE", currentPage} as const),
+    setTotalUsersCountAC: (totalUsersCount: number) => ({type: "SET-TOTAL-USERS-COUNT", count: totalUsersCount } as const)
 
 }
 
