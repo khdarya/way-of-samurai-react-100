@@ -12,6 +12,7 @@ export type UsersType = {
     users: Array<UsersPropType>
     followUsers: (userId: number) => void
     unfollowUsers: (userId: number) => void
+
 }
 
 let Users = (props: UsersType) => {
