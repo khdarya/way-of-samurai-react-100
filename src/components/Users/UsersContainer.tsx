@@ -7,7 +7,6 @@ import {UsersPropType} from "../../redux/users-reducer";
 //import UsersAPIComponent from "./UsersAPIComponent";
 import axios from "axios";
 import Users from "./Users";
-import preloader from '../../assets/images/preloader.svg';
 import Preloader from "../common/Preloader/Preloader";
 
 
@@ -22,7 +21,7 @@ type MapStateType = {
 type MapDispatchType = {
     followUsers: (userId: number) => void
     unfollowUsers: (userId: number) => void
-    setUsers: (users: Array<any>) => void
+    setUsers: (users: Array<UsersPropType>) => void
     setCurrentPage: (pageNumber: number) => void
     setTotalUsersCount: (totalUsersCount: number) => void
     toggleIsFetching: (isFetching: boolean) => void
@@ -30,22 +29,7 @@ type MapDispatchType = {
 
 type PropsType =  MapDispatchType & MapStateType
 
-// export type UsersPropsType = {
-//     users: Array<UsersPropType>
-//     followUsers: (userId: number) => void
-//     unfollowUsers: (userId: number) => void
-//     setUsers: (users: Array<UsersPropType>) => void
-//     setCurrentPage: (currentPage: number) => void
-//     setTotalUsersCount: (totalUsersCount: number) => void
-//     totalUsersCount: number
-//     pageSize: number
-//     currentPage: number
-//     isFetching: boolean
-//     toggleIsFetching: (isFetching: boolean) => void
-// }
-
 class UsersContainer extends React.Component<PropsType> {
-
 
     componentDidMount() {
         this.props.toggleIsFetching(true);
@@ -66,7 +50,6 @@ class UsersContainer extends React.Component<PropsType> {
                 this.props.toggleIsFetching(false);
                 this.props.setUsers(response.data.items)
             });
-
     }
 
     render() {
@@ -83,24 +66,6 @@ class UsersContainer extends React.Component<PropsType> {
         </>
     }
 }
-
-// export const UsersContainer = (props: PropsType) => {
-//     const {users, followUsers, unfollowUsers, setUsers, totalUsersCount, pageSize, currentPage, setCurrentPage, setTotalUsersCount} = props
-//     return (
-//         <Users
-//
-//             totalUsersCount={totalUsersCount}
-//             pageSize={pageSize}
-//             currentPage={currentPage}
-//             users={users}
-//             followUsers={followUsers}
-//             unfollowUsers={unfollowUsers}
-//             setUsers={setUsers}
-//             setCurrentPage={setCurrentPage}
-//             setTotalUsersCount={setTotalUsersCount}
-//         />
-//     )
-// }
 
 
 const mapStateToProps = (state: AppStateType): MapStateType => {

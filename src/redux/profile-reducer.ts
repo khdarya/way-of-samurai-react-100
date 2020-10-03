@@ -1,7 +1,20 @@
 import {InferActionsTypes} from "./redux-store";
 
-// const ADD_POST = 'ADD-POST';
-// const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+
+export type ProfilePropType = {
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: {
+        github: string
+        website: string
+    }
+    photos: {
+        small: string
+        large: string
+    }
+}
 
 export type PostsPropType = {
     id: number
@@ -16,7 +29,8 @@ let initialState = {
     {id: 2, message: 'It\'s my first post', likesCount: 10},
     {id: 3, message: 'Bla', likesCount: 11},
     {id: 4, message: 'Dada', likesCount: 14}
-] as Array<PostsPropType>
+] as Array<PostsPropType>,
+    profile: null as null | ProfilePropType
 }
 
 type InitialStateType = typeof initialState
@@ -54,6 +68,9 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
             state.newPostText = action.newText;
             return state;*/
 
+        case 'SET-USER-PROFILE': {
+                return {...state, profile: action.profile}
+            }
         default:
             return state;
     }
@@ -63,7 +80,8 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
 
 export const actions = {
     addPostActionCreator: (message: string) => ({type: 'ADD-POST', message} as const),
-    updateNewPostTextActionCreator: (newText: string) => ({type: 'UPDATE-NEW-POST-TEXT', newText} as const)
+    updateNewPostTextActionCreator: (newText: string) => ({type: 'UPDATE-NEW-POST-TEXT', newText} as const),
+    setUserProfileAC: (profile: ProfilePropType) => ({type: 'SET-USER-PROFILE', profile} as const)
 
 }
 
