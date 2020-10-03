@@ -10,23 +10,23 @@ type ProfileInfoType = {
 
 const ProfileInfo = (props: ProfileInfoType) => {
     if (!props.profile) {
-        return <Preloader />
+        return <Preloader/>
     }
-        return (
+    return (
+        <div>
             <div>
-                <div>
-                    <img src='https://www.pbs.org/wgbh/nova/media/images/sting-ray-city-grand-cayman-1.width-800.jpg'/>
-                </div>
-                <div className={s.descriptionBlock}>
-
-                    <img src={props.profile.photos.large !== null ? props.profile.photos.large
-                        : photo}/>
-                    ava + description
-                </div>
-
+                <img src='https://www.pbs.org/wgbh/nova/media/images/sting-ray-city-grand-cayman-1.width-800.jpg'/>
+            </div>
+            <div className={s.descriptionBlock}>
+                <img src={props.profile.photos.large}/>
+                {/*         <img src={props.profile.photos.large !== null ? props.profile.photos.large
+                        : photo}/>*/}
+                ava + description
             </div>
 
-        )
+        </div>
+
+    )
 
 }
 export default ProfileInfo;

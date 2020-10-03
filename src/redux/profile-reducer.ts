@@ -24,12 +24,12 @@ export type PostsPropType = {
 
 let initialState = {
     newPostText: '',
-        posts: [
-    {id: 1, message: 'Hi how are you?', likesCount: 12},
-    {id: 2, message: 'It\'s my first post', likesCount: 10},
-    {id: 3, message: 'Bla', likesCount: 11},
-    {id: 4, message: 'Dada', likesCount: 14}
-] as Array<PostsPropType>,
+    posts: [
+        {id: 1, message: 'Hi how are you?', likesCount: 12},
+        {id: 2, message: 'It\'s my first post', likesCount: 10},
+        {id: 3, message: 'Bla', likesCount: 11},
+        {id: 4, message: 'Dada', likesCount: 14}
+    ] as Array<PostsPropType>,
     profile: null as null | ProfilePropType
 }
 
@@ -39,38 +39,39 @@ type ActionsTypes = InferActionsTypes<typeof actions>
 
 const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 
-    switch(action.type) {
-
+    switch (action.type) {
         case 'ADD-POST': {
             let newPost = {
                 id: new Date().getTime(),
                 message: action.message,
                 likesCount: 0
             };
-            return {...state,
+            return {
+                ...state,
                 newPostText: '',
-                posts: [newPost, ...state.posts]}
+                posts: [newPost, ...state.posts]
+            }
         }
         case 'UPDATE-NEW-POST-TEXT': {
-           return {...state, newPostText: action.newText}
+            return {...state, newPostText: action.newText}
         }
 
-/*        case ADD_POST:
-            let newPost = {
-                id: new Date().getTime(),
-                message: action.newPostText,
-                likesCount: 0
-            };
-            state.posts.push(newPost);
-            state.newPostText = '';
-            return state;
-        case UPDATE_NEW_POST_TEXT:
-            state.newPostText = action.newText;
-            return state;*/
+        /*        case ADD_POST:
+                    let newPost = {
+                        id: new Date().getTime(),
+                        message: action.newPostText,
+                        likesCount: 0
+                    };
+                    state.posts.push(newPost);
+                    state.newPostText = '';
+                    return state;
+                case UPDATE_NEW_POST_TEXT:
+                    state.newPostText = action.newText;
+                    return state;*/
 
         case 'SET-USER-PROFILE': {
-                return {...state, profile: action.profile}
-            }
+            return {...state, profile: action.profile}
+        }
         default:
             return state;
     }
