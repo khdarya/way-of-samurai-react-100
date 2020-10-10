@@ -14,6 +14,8 @@ export type UsersType = {
     users: Array<UsersPropType>
     followUsers: (userId: number) => void
     unfollowUsers: (userId: number) => void
+    toggleFollowingProgress: (isFetching: boolean, id: number) => void
+    followingInProgress: Array<any>
 
 }
 
@@ -46,8 +48,8 @@ let Users = (props: UsersType) => {
                         </div>
                         <div>
                             {u.followed
-                                ? <button onClick={() => {
-
+                                ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
+                                    props.toggleFollowingProgress(true, u.id);
                                     axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
                                         withCredentials: true,
                                         headers: {
@@ -58,39 +60,39 @@ let Users = (props: UsersType) => {
                                             if (response.data.resultCode == 0) {
                                                 props.unfollowUsers(u.id);
                                             }
+                                            props.toggleFollowingProgress(false, u.id);
                                         });
                                 }}>Unfollow</button>
 
-                                    : <button onClick={() => {
-
-                                        axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
-                                            withCredentials: true,
-                                            headers: {
-                                                "API-KEY": "979d9ce7-5a57-44f9-9b9c-37da1881885c"
+                                : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
+                                    props.toggleFollowingProgress(true, u.id);
+                                    axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
+                                        withCredentials: true,
+                                        headers: {
+                                            "API-KEY": "979d9ce7-5a57-44f9-9b9c-37da1881885c"
+                                        }
+                                    })
+                                        .then(response => {
+                                            if (response.data.resultCode == 0) {
+                                                props.followUsers(u.id)
                                             }
-                                        })
-                                            .then(response => {
-                                                if (response.data.resultCode == 0) {
-                                                    props.followUsers(u.id)
-                                                }
-                                            });
-
-
-                                    }}>Follow</button>
-                                }
+                                            props.toggleFollowingProgress(false, u.id);
+                                        });
+                                }}>Follow</button>
+                            }
                                 </div>
                                 </span>
-                                <span>
+                <span>
                                 <div>{u.name}</div>
                                 <div>{u.status}</div>
                                 </span>
-                                <span>
+                <span>
                                 <div>{"u.location.country"}</div>
                                 <div>{"u.location.city"}</div>
                                 </span>
-                                </div>)
-                                }
-                                </div>
-                                }
+            </div>)
+        }
+    </div>
+}
 
-                                export default Users;
+export default Users;

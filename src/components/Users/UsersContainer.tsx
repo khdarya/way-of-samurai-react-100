@@ -17,6 +17,8 @@ type MapStateType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: Array<any>
+
 }
 
 type MapDispatchType = {
@@ -26,6 +28,7 @@ type MapDispatchType = {
     setCurrentPage: (pageNumber: number) => void
     setTotalUsersCount: (totalUsersCount: number) => void
     toggleIsFetching: (isFetching: boolean) => void
+    toggleFollowingProgress: (isFetching: boolean, userId: number) => void
 }
 
 type PropsType = MapDispatchType & MapStateType
@@ -34,12 +37,6 @@ class UsersContainer extends React.Component<PropsType> {
 
     componentDidMount() {
         this.props.toggleIsFetching(true);
-        // if (this.props.users.length === 0) {
-
-        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,
-        //     {
-        //         withCredentials: true
-        //     })
 
         usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
                 .then(data => {
@@ -52,7 +49,7 @@ class UsersContainer extends React.Component<PropsType> {
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber);
         this.props.toggleIsFetching(true);
-//
+
         usersAPI.getUsers(pageNumber, this.props.pageSize)
             .then(data => {
                 this.props.toggleIsFetching(false);
@@ -70,6 +67,9 @@ class UsersContainer extends React.Component<PropsType> {
                    users={this.props.users}
                    followUsers={this.props.followUsers}
                    unfollowUsers={this.props.unfollowUsers}
+                   followingInProgress={this.props.followingInProgress}
+
+                   toggleFollowingProgress={this.props.toggleFollowingProgress}
             />
         </>
     }
@@ -82,7 +82,8 @@ const mapStateToProps = (state: AppStateType): MapStateType => {
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        followingInProgress: state.usersPage.followingInProgress
     }
 }
 
@@ -92,5 +93,6 @@ export default connect<MapStateType, MapDispatchType, {}, AppStateType>(mapState
     setUsers: actions.setUsersAC,
     setCurrentPage: actions.setCurrentPageAC,
     setTotalUsersCount: actions.setTotalUsersCountAC,
-    toggleIsFetching: actions.toggleIsFetchingAC
+    toggleIsFetching: actions.toggleIsFetchingAC,
+    toggleFollowingProgress: actions.toggleFollowingProgressAC
 })(UsersContainer)

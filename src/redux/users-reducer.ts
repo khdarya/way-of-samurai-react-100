@@ -19,24 +19,12 @@ type locationType = {
 }
 
 let initialState = {
-    users: [
-        // {
-        //     id: 1, avatar: 'https://www.iconfinder.com/data/icons/business-avatar-1/512/2_avatar-128.png',
-        //     followed: false, fullName: 'Dmitry', status: 'I am a boss', location: {city: 'Minsk', country: 'Belarus'}
-        // },
-        // {
-        //     id: 2, avatar: 'https://www.iconfinder.com/data/icons/business-avatar-1/512/7_avatar-128.png',
-        //     followed: true, fullName: 'Sasha', status: 'I am a boss too', location: {city: 'Moscow', country: 'Russia'}
-        // },
-        // {
-        //     id: 3, avatar: 'https://www.iconfinder.com/data/icons/business-avatar-1/512/10_avatar-128.png',
-        //     followed: false, fullName: 'Andrew', status: 'I am a boss too', location: {city: 'Kiev', country: 'Ukraine'}
-        // },
-    ] as Array<UsersPropType>,
+    users: [] as Array<UsersPropType>,
     pageSize: 88,
     totalUsersCount: 0,
     currentPage: 1,
-    isFetching: true
+    isFetching: true,
+    followingInProgress: [] as Array<any>
 }
 
 type InitialStateType = typeof initialState
@@ -80,6 +68,14 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
         case "TOGGLE-IS-FETCHING": {
             return {...state, isFetching: action.isFetching}
         }
+        case "TOGGLE-IS-FOLLOWING-PROGRESS": {
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : state.followingInProgress.filter(id => id != action.userId)
+            }
+        }
         default:
             return state;
     }
@@ -93,7 +89,8 @@ export const actions = {
     setUsersAC: (users: Array<UsersPropType>) => ({type: 'SET-USERS', users} as const),
     setCurrentPageAC: (currentPage: number) => ({type: "SET-CURRENT-PAGE", currentPage} as const),
     setTotalUsersCountAC: (totalUsersCount: number) => ({type: "SET-TOTAL-USERS-COUNT", count: totalUsersCount } as const),
-    toggleIsFetchingAC: (isFetching: boolean) => ({type: "TOGGLE-IS-FETCHING", isFetching} as const)
+    toggleIsFetchingAC: (isFetching: boolean) => ({type: "TOGGLE-IS-FETCHING", isFetching} as const),
+    toggleFollowingProgressAC: (isFetching: boolean, userId: number) => ({type: "TOGGLE-IS-FOLLOWING-PROGRESS", isFetching, userId} as const)
 
 }
 
