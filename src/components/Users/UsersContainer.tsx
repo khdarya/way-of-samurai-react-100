@@ -2,11 +2,9 @@ import React from 'react';
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
 import {
-    follow,
     setCurrentPage,
     toggleFollowingProgress,
-    unfollow,
-    getUsers
+    getUsers, follow, unfollow
 } from "../../redux/users-reducer";
 import {UsersPropType} from "../../redux/users-reducer";
 //import Users from "./UsersAPIComponent";
@@ -69,7 +67,7 @@ class UsersContainer extends React.Component<PropsType> {
                    follow={this.props.follow}
                    unfollow={this.props.unfollow}
                    followingInProgress={this.props.followingInProgress}
-                   toggleFollowingProgress={this.props.toggleFollowingProgress}
+                  toggleFollowingProgress={this.props.toggleFollowingProgress}
             />
         </>
     }
