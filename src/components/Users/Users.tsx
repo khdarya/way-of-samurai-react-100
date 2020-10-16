@@ -12,8 +12,8 @@ export type UsersType = {
     currentPage: number
     onPageChanged: (pageNumber: number) => void
     users: Array<UsersPropType>
-    followUsers: (userId: number) => void
-    unfollowUsers: (userId: number) => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
     toggleFollowingProgress: (isFetching: boolean, id: number) => void
     followingInProgress: Array<any>
 
@@ -58,7 +58,7 @@ let Users = (props: UsersType) => {
                                     })
                                         .then(response => {
                                             if (response.data.resultCode == 0) {
-                                                props.unfollowUsers(u.id);
+                                                props.unfollow(u.id);
                                             }
                                             props.toggleFollowingProgress(false, u.id);
                                         });
@@ -74,7 +74,7 @@ let Users = (props: UsersType) => {
                                     })
                                         .then(response => {
                                             if (response.data.resultCode == 0) {
-                                                props.followUsers(u.id)
+                                                props.follow(u.id)
                                             }
                                             props.toggleFollowingProgress(false, u.id);
                                         });
