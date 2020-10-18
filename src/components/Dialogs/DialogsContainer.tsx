@@ -9,6 +9,7 @@ type MapStateType = {
     newMessageText: string
     messages: Array<MessagesPropType>
     dialogs: Array<DialogsPropType>
+    isAuth: boolean
 }
 type MapDispatchType = {
     sendMessage: (message: string) => void
@@ -19,7 +20,7 @@ type PropsType = OwnerType & MapDispatchType & MapStateType
 
 export const DialogsContainer = (props: PropsType) => {
 
-    const {messages, newMessageText, sendMessage, updateNewMessageBody, dialogs} = props
+    const {messages, newMessageText, sendMessage, updateNewMessageBody, dialogs, isAuth} = props
 
     return (
         <Dialogs
@@ -29,6 +30,8 @@ export const DialogsContainer = (props: PropsType) => {
             updateNewMessageBody={updateNewMessageBody}
 
             dialogs={dialogs}
+
+            isAuth={isAuth}
         />
     )
 }
@@ -37,7 +40,8 @@ const mapStateToProps = (state: AppStateType): MapStateType => {
     return {
         newMessageText: state.dialogsPage.newMessageText,
         messages: state.dialogsPage.messages,
-        dialogs: state.dialogsPage.dialogs
+        dialogs: state.dialogsPage.dialogs,
+        isAuth: state.auth.isAuth
     }
 }
 
