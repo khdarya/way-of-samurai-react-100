@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {actions} from "../../redux/dialogs-reducer";
 import {Redirect} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 type MapStateType = {
     newMessageText: string
@@ -37,8 +38,9 @@ export const DialogsContainer = (props: PropsType) => {
     )
 }
 
-let AuthRedirectComponent = withAuthRedirect(DialogsContainer)
 
+
+//let AuthRedirectComponent = withAuthRedirect(DialogsContainer)
 
 const mapStateToProps = (state: AppStateType): MapStateType => {
     return {
@@ -49,7 +51,15 @@ const mapStateToProps = (state: AppStateType): MapStateType => {
     }
 }
 
-export default connect<MapStateType, MapDispatchType, OwnerType, AppStateType>(mapStateToProps, {
-    sendMessage: actions.sendMessageActionCreator,
-    updateNewMessageBody: actions.updateNewMessageBodyActionCreator
-})(AuthRedirectComponent)
+export default compose<React.ComponentType>(
+    connect<MapStateType, MapDispatchType, OwnerType, AppStateType>(mapStateToProps, {
+        sendMessage: actions.sendMessageActionCreator,
+        updateNewMessageBody: actions.updateNewMessageBodyActionCreator
+    }),
+    withAuthRedirect
+)(DialogsContainer)
+
+// export default connect<MapStateType, MapDispatchType, OwnerType, AppStateType>(mapStateToProps, {
+//     sendMessage: actions.sendMessageActionCreator,
+//     updateNewMessageBody: actions.updateNewMessageBodyActionCreator
+// })(AuthRedirectComponent)

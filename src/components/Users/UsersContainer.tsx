@@ -13,6 +13,8 @@ import axios from "axios";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
 import { usersAPI} from "../../api/api";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 
 type MapStateType = {
@@ -85,10 +87,23 @@ const mapStateToProps = (state: AppStateType): MapStateType => {
     }
 }
 
-export default connect<MapStateType, MapDispatchType, {}, AppStateType>(mapStateToProps, {
-    follow,
-    unfollow,
-    setCurrentPage,
-    toggleFollowingProgress,
-    getUsers
-})(UsersContainer)
+//let withRedirect = withAuthRedirect(UsersContainer);
+
+// export default  withAuthRedirect(connect<MapStateType, MapDispatchType, {}, AppStateType>(mapStateToProps, {
+//     follow,
+//     unfollow,
+//     setCurrentPage,
+//     toggleFollowingProgress,
+//     getUsers
+// })(UsersContainer))
+
+export default compose<React.ComponentType>(
+    withAuthRedirect,
+    connect<MapStateType, MapDispatchType, {}, AppStateType>(mapStateToProps, {
+        follow,
+        unfollow,
+        setCurrentPage,
+        toggleFollowingProgress,
+        getUsers
+    })
+)(UsersContainer)
