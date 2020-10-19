@@ -13,7 +13,7 @@ export type DialogsPropsType = {
     updateNewMessageBody: (newMessageText: string) => void
 
     dialogs: Array<DialogsPropType>
-    isAuth: boolean
+   // isAuth: boolean
 }
 
 const Dialogs = (props: DialogsPropsType) => {
@@ -30,7 +30,7 @@ const Dialogs = (props: DialogsPropsType) => {
         updateNewMessageBody(e.currentTarget.value)
     }
 
-    if(!props.isAuth) return <Redirect to={"/login"} />;
+   // if(!props.isAuth) return <Redirect to={"/login"} />;
 
     return (
         <div className={s.dialogs}>
