@@ -1,13 +1,13 @@
 import React from "react";
-import Profile from "../Profile";
+import Profile from "./Profile";
 import axios from "axios";
-import {AppStateType} from "../../../redux/redux-store";
+import {AppStateType} from "../../redux/redux-store";
 import {connect} from "react-redux";
-import { getUserProfile, ProfilePropType} from "../../../redux/profile-reducer";
+import { getUserProfile, ProfilePropType} from "../../redux/profile-reducer";
 import {RouteComponentProps, withRouter} from 'react-router';
-import {usersAPI} from "../../../api/api";
+import {usersAPI} from "../../api/api";
 import {Redirect} from "react-router-dom";
-import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 
 
@@ -74,5 +74,5 @@ export default compose<React.ComponentType>(
         getUserProfile
     }),
     withRouter,
-    withAuthRedirect
+    //withAuthRedirect
 )(ProfileContainer)
