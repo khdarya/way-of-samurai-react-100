@@ -3,7 +3,7 @@ import Profile from "./Profile";
 import axios from "axios";
 import {AppStateType} from "../../redux/redux-store";
 import {connect} from "react-redux";
-import { getUserProfile, ProfilePropType} from "../../redux/profile-reducer";
+import {getStatus, getUserProfile, ProfilePropType, updateStatus} from "../../redux/profile-reducer";
 import {RouteComponentProps, withRouter} from 'react-router';
 import {usersAPI} from "../../api/api";
 import {Redirect} from "react-router-dom";
@@ -13,14 +13,14 @@ import {compose} from "redux";
 
 type MapStateType = {
     profile: ProfilePropType | null
-   // isAuth: boolean
-
+    status: string
 
 }
 
 type MapDispatchType = {
-   // setUserProfile: (profile: ProfilePropType) => void
     getUserProfile: (userId: number) => void
+    getStatus: (userId: number) => void
+    updateStatus: (status: string) => void
 }
 type PathParamsType = {
     userId: any
@@ -38,18 +38,17 @@ class ProfileContainer extends React.Component<PropsType> {
         }
         this.props.getUserProfile(userId);
 
-        // usersAPI.getProfile(userId)
-        //     .then(response => {
-        //         this.props.setUserProfile(response.data);
-        //     });
+        this.props.getStatus(userId);
     }
 
     render() {
 
         return (
             <div>
-                <Profile
-                    profile={this.props.profile}
+                <Profile {...this.props}
+                         profile={this.props.profile}
+                         status={this.props.status}
+                         updateStatus={this.props.updateStatus}
                 />
             </div>
         )
@@ -60,7 +59,8 @@ class ProfileContainer extends React.Component<PropsType> {
 
 
 let mapStateToProps = (state: AppStateType): MapStateType => ({
-        profile: state.profilePage.profile
+    profile: state.profilePage.profile,
+    status: state.profilePage.status
 });
 
 // let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
@@ -71,7 +71,9 @@ let mapStateToProps = (state: AppStateType): MapStateType => ({
 
 export default compose<React.ComponentType>(
     connect<MapStateType, MapDispatchType, {}, AppStateType>(mapStateToProps, {
-        getUserProfile
+        getUserProfile,
+        getStatus,
+        updateStatus
     }),
     withRouter,
     //withAuthRedirect
