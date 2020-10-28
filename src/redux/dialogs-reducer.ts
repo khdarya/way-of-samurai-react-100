@@ -26,7 +26,6 @@ let initialState = {
         {id: 4, message: 'Yo'},
         {id: 5, message: 'Yo'}
     ] as Array<MessagesPropType>,
-    newMessageText: '',
 }
 
 type InitialStateType = typeof initialState
@@ -40,63 +39,19 @@ const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStat
                 message: action.text
             };
             return {...state,
-                newMessageText: '',
                 messages: [newMessage, ...state.messages]}
         }
-        case 'UPDATE-NEW-MESSAGE-BODY': {
-            return {...state, newMessageText: action.newMessageText}
-        }
-
-        // case SEND_MESSAGE:
-        //     let newMessage: MessagesType = {
-        //         id: new Date().getTime(),
-        //         message: action.newMessageText,
-        //     };
-        //     state.messages.push(newMessage);
-        //     state.newMessageText = '';
-        //     return state;
-        // case UPDATE_NEW_MESSAGE_BODY:
-        //     state.newMessageText = action.newMessageText;
-        //     return state;
 
         default:
             return state;
     }
-
-    /*        if (action.type === 'SEND-MESSAGE') {
-                const newMessage: MessagesType = {
-                    id: new Date().getTime(),
-                    message: action.newMessageText,
-                };
-                state.messages.push(newMessage);
-                state.newMessageText = '';
-
-            } else if (action.type === 'UPDATE-NEW-MESSAGE-BODY') {
-                state.newMessageText = action.newMessageText;
-
-            }*/
-
 
     return state;
 }
 
 export const actions = {
     sendMessageActionCreator: (text: string) => ({type: 'SEND-MESSAGE', text} as const),
-    updateNewMessageBodyActionCreator: (newMessageText: string) => ({type: 'UPDATE-NEW-MESSAGE-BODY', newMessageText} as const)
+   // updateNewMessageBodyActionCreator: (newMessageText: string) => ({type: 'UPDATE-NEW-MESSAGE-BODY', newMessageText} as const)
 }
-
-// export const sendMessageCreator = (newMessageText: string) => {
-//     return {
-//         type: 'SEND-MESSAGE',
-//         newMessageText: newMessageText
-//     } as const
-// }
-//
-// export const updateNewMessageBodyCreator = (newMessageText: string) => {
-//     return {
-//         type: 'UPDATE-NEW-MESSAGE-BODY',
-//         newMessageText: newMessageText
-//     } as const
-// }
 
 export default dialogsReducer;
