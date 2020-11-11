@@ -6,11 +6,11 @@ import {stopSubmit} from "redux-form";
 const SET_AUTH_USER_DATA = 'SET-AUTH-USER-DATA';
 
 let initialState = {
-    id: null as (number | null),
+   // id: null as (number | null),
     email: null as string | null,
     login: null as string | null,
     isAuth: false,
-    userId: null as (number | null)  //
+    userId: null as (string | null)  //
 }
 
 type InitialStateType = typeof initialState
@@ -18,10 +18,13 @@ type InitialStateType = typeof initialState
 
 const authReducer = (state = initialState, action: SetAuthUserData): InitialStateType => {
     switch (action.type) {
+
         case SET_AUTH_USER_DATA:
+            debugger
             return {
                 ...state,
                 ...action.payload
+
             }
         default:
             return state;
@@ -33,17 +36,10 @@ type SetAuthUserData = {
     payload: any
 }
 
-export const setAuthUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean): SetAuthUserData => ({
-    type: SET_AUTH_USER_DATA, payload: {id, email, login, isAuth}
+export const setAuthUserData = (userId: string | null, email: string | null, login: string | null, isAuth: boolean): SetAuthUserData => ({
+    type: SET_AUTH_USER_DATA, payload: {userId, email, login, isAuth}
 } as const)
 
-// export const actions = {
-//     setAuthUserDataAC: (id: number, email: string, login: string) => ({
-//         type: SET_AUTH_USER_DATA, data: {
-//             id, email, login
-//         }
-//     } as const)
-// }
 
 export const getAuthUserData = () => {
     return (dispatch: Dispatch) =>

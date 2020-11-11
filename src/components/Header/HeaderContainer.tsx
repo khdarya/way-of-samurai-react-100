@@ -18,15 +18,9 @@ type PropsType = MapStateType & MapDispatchType
 
 class HeaderContainer extends React.Component<PropsType> {
     componentDidMount() {
+        debugger
         this.props.getAuthUserData();
 
-        // authAPI.me()
-        //     .then(response => {
-        //         if (response.data.resultCode === 0) {
-        //             let {id, email, login} = response.data.data
-        //             this.props.setAuthUserData(id, email, login);
-        //         }
-        //     });
     }
 
     render() {

@@ -34,20 +34,19 @@ type PropsType = RouteComponentProps<PathParamsType> & OwnPropsType
 class ProfileContainer extends React.Component<PropsType> {
 
     componentDidMount() {
+        debugger
         let userId = +this.props.match.params.userId;
         if (!userId) {
-
+            debugger
             userId = this.props.authorizedUserId;
-
         }
 
-        if (!userId) {
-            console.error("ID should exists in URI params or in state");
-        } else {
-
+        // if (!userId) {
+        //     console.error("ID should exists in URI params or in state");
+        // } else {
             this.props.getUserProfile(userId);
             this.props.getStatus(userId);
-        }
+        // }
     }
 
     render() {
@@ -64,8 +63,6 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 }
 
-// let AuthRedirectComponent = withAuthRedirect(ProfileContainer);
-
 
 let mapStateToProps = (state: AppStateType): MapStateType => ({
     profile: state.profilePage.profile,
@@ -74,11 +71,6 @@ let mapStateToProps = (state: AppStateType): MapStateType => ({
     isAuth: state.auth.isAuth
 });
 
-// let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
-
-// export default connect<MapStateType, MapDispatchType, {}, AppStateType>(mapStateToProps, {
-//     getUserProfile
-// })(WithUrlDataContainerComponent);
 
 export default compose<React.ComponentType>(
     connect<MapStateType, MapDispatchType, {}, AppStateType>(mapStateToProps, {
@@ -87,5 +79,4 @@ export default compose<React.ComponentType>(
         updateStatus
     }),
     withRouter,
-    //withAuthRedirect
 )(ProfileContainer)

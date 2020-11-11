@@ -12,16 +12,18 @@ type ProfileInfoType = {
 }
 
 const ProfileInfo = (props: ProfileInfoType) => {
+
     if (!props.profile) {
         return <Preloader/>
     }
+
     return (
         <div>
             {/*<div>*/}
             {/*    <img src='https://www.pbs.org/wgbh/nova/media/images/sting-ray-city-grand-cayman-1.width-800.jpg'/>*/}
             {/*</div>*/}
             <div className={s.descriptionBlock}>
-                <img src={props.profile.photos.large}/>
+                <img src={props.profile.photos.large ? props.profile.photos.large :photo }/>
 
                 <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
 
