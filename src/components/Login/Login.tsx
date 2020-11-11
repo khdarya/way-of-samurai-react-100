@@ -4,8 +4,9 @@ import {Input} from "../common/FormsControls/FormsControls";
 import {required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../redux/auth-reducer";
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import {AppStateType} from "../../redux/redux-store";
+import style from "./../common/FormsControls/FormsControls.module.css"
 
 type FormDataType = {
     email: string
@@ -29,6 +30,9 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
             <div>
                 <Field component={Input} name={"rememberMe"} type={"checkbox"}/> remember me
             </div>
+            {props.error && <div className={style.formSummaryError}>
+                {props.error}
+            </div>}
             <div>
                 <button>Login</button>
             </div>
@@ -43,7 +47,7 @@ const Login = (props: any) => {
         props.login(formData.email, formData.password, formData.rememberMe)
     }
 
-    if(props.isAuth) {
+    if (props.isAuth) {
         return <Redirect to={'/profile'}/>
     }
 
@@ -57,4 +61,4 @@ const mapStateToProps = (state: AppStateType) => ({
     isAuth: state.auth.isAuth
 })
 
-export default connect(mapStateToProps, {login}) (Login);
+export default connect(mapStateToProps, {login})(Login);

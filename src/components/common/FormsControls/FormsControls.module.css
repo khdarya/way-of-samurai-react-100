@@ -9,3 +9,9 @@ border: 2px red solid;
 {
     color: red;
 }
+
+.formSummaryError {
+    border: red 1px solid;
+    padding: 5px;
+    color: #bb1d1d
+}

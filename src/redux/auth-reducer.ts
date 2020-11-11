@@ -1,6 +1,7 @@
 import {InferActionsTypes} from "./redux-store";
 import {authAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {stopSubmit} from "redux-form";
 
 const SET_AUTH_USER_DATA = 'SET-AUTH-USER-DATA';
 
@@ -8,7 +9,8 @@ let initialState = {
     id: null as (number | null),
     email: null as string | null,
     login: null as string | null,
-    isAuth: false
+    isAuth: false,
+    userId: null as (number | null)  //
 }
 
 type InitialStateType = typeof initialState
@@ -54,10 +56,16 @@ export const getAuthUserData = () => {
             });
 }
 export const login = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch<any>) => {
+
         authAPI.login(email, password, rememberMe)
             .then(response => {
                 if (response.data.resultCode === 0) {
                    dispatch(getAuthUserData())
+                } else {
+                   let message = response.data.messages.length > 0
+                       ? response.data.messages[0]
+                       : "Some error";
+                    dispatch(stopSubmit("login", {_error: message}));
                 }
             });
 }

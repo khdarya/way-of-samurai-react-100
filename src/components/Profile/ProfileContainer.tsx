@@ -14,7 +14,8 @@ import {compose} from "redux";
 type MapStateType = {
     profile: ProfilePropType | null
     status: string
-
+    authorizedUserId: any
+    isAuth: boolean
 }
 
 type MapDispatchType = {
@@ -23,7 +24,8 @@ type MapDispatchType = {
     updateStatus: (status: string) => void
 }
 type PathParamsType = {
-    userId: any
+    userId: string
+
 }
 type OwnPropsType = MapDispatchType & MapStateType
 type PropsType = RouteComponentProps<PathParamsType> & OwnPropsType
@@ -32,13 +34,20 @@ type PropsType = RouteComponentProps<PathParamsType> & OwnPropsType
 class ProfileContainer extends React.Component<PropsType> {
 
     componentDidMount() {
-        let userId = this.props.match.params.userId;
+        let userId = +this.props.match.params.userId;
         if (!userId) {
-            userId = 2;
-        }
-        this.props.getUserProfile(userId);
 
-        this.props.getStatus(userId);
+            userId = this.props.authorizedUserId;
+
+        }
+
+        if (!userId) {
+            console.error("ID should exists in URI params or in state");
+        } else {
+
+            this.props.getUserProfile(userId);
+            this.props.getStatus(userId);
+        }
     }
 
     render() {
@@ -60,7 +69,9 @@ class ProfileContainer extends React.Component<PropsType> {
 
 let mapStateToProps = (state: AppStateType): MapStateType => ({
     profile: state.profilePage.profile,
-    status: state.profilePage.status
+    status: state.profilePage.status,
+    authorizedUserId: state.auth.userId,
+    isAuth: state.auth.isAuth
 });
 
 // let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
