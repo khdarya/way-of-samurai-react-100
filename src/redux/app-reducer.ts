@@ -26,16 +26,20 @@ type initializedType = {
     type: typeof INITIALIZED_SUCCESS
 }
 
-export const initializedSuccess = (): initializedType => ({
-    type: INITIALIZED_SUCCESS
-} as const)
+export const initializedSuccess = (): initializedType => ({type: INITIALIZED_SUCCESS} as const)
 
 
-export const initializeApp = () => (dispatch: Dispatch<any>) => {
-                let promise =  dispatch(getAuthUserData());
-                promise.then(() => {
-                    dispatch(initializedSuccess());
-                })
-}
+// export const initializeApp = () => (dispatch: Dispatch<any>) => {
+//                 let promise =  dispatch(getAuthUserData());
+//                 Promise.all([promise])
+//                     .then(() => {
+//                     dispatch(initializedSuccess());
+//                })
+// }
+
+export const initializeApp = () => async (dispatch: Dispatch<any>) => {
+    await dispatch(getAuthUserData());
+    dispatch(initializedSuccess());
+};
 
 export default appReducer;

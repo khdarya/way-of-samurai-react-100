@@ -11,19 +11,27 @@ import {connect} from "react-redux";
 import {getAuthUserData} from "./redux/auth-reducer";
 import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
+import {AppStateType} from "./redux/redux-store";
+import Preloader from "./components/common/Preloader/Preloader";
 
 
 type MDTPType = {
     initializeApp: () => void
 }
+type MSTPType = {
+    initialized: boolean
+}
 
-class App extends React.Component<MDTPType> {
+class App extends React.Component<MSTPType & MDTPType> {
 
     componentDidMount() {
         this.props.initializeApp();
     }
 
     render() {
+        if (!this.props.initialized) {
+            return <Preloader/>
+        }
         return (
             <div className='app-wrapper'>
                 <HeaderContainer/>
@@ -44,6 +52,10 @@ class App extends React.Component<MDTPType> {
     }
 }
 
-export default compose<any> (
+const mapStateToProps = (state: AppStateType) => ({
+    initialized: state.app.initialized
+})
+
+export default compose<any>(
     withRouter,
-    connect (null, {initializeApp})) (App);
+    connect(mapStateToProps, {initializeApp}))(App) as React.ComponentClass;
