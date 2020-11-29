@@ -9,6 +9,7 @@ const SET_CURRENT_PAGE = "SET-CURRENT-PAGE";
 const SET_TOTAL_USERS_COUNT = "SET-TOTAL-USERS-COUNT";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE-IS-FOLLOWING-PROGRESS";
+const FAKE = "FAKE"
 
 export type UsersPropType = {
     id: number
@@ -33,7 +34,8 @@ let initialState = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
-    followingInProgress: [] as Array<any>
+    followingInProgress: [] as Array<any>,
+    fake: 10
 }
 
 type InitialStateType = typeof initialState
@@ -43,6 +45,9 @@ type InitialStateType = typeof initialState
 const usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
     switch (action.type) {
+
+        case FAKE: return {...state, fake: state.fake +1}
+
         case FOLLOW:
             return {
                 ...state,
@@ -94,6 +99,12 @@ type ActionsType = FollowActionType | UnfollowActionType
     | SetUsersActionType | SetCurrentPageActionType
     | SetTotalUsersCountActionType
 | ToggleIsFetchingActionType | ToggleFollowingProgress
+| FakeType
+
+type FakeType = {
+    type: typeof FAKE,
+    fake: number
+}
 
 type FollowActionType = {
     type: typeof FOLLOW
