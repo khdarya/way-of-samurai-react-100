@@ -61,7 +61,7 @@ class UsersContainer extends React.Component<PropsType> {
 
     render() {
 
-        console.log("Render")
+       // console.log("Render")
 
         return <>
             {this.props.isFetching ? <Preloader/> : null}
@@ -93,7 +93,7 @@ class UsersContainer extends React.Component<PropsType> {
 
 const mapStateToProps = (state: AppStateType): MapStateType => {
 
-    console.log('mapStateToProps USERS')
+    // console.log('mapStateToProps USERS')
 
     return {
         //users: getUsersSuperSelector(state),

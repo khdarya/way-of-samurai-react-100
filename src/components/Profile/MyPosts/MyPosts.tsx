@@ -1,8 +1,8 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import s from './MyPosts.module.css';
 import {Post} from './Post/Post';
 import {PostsPropType} from '../../../redux/profile-reducer'
-import {reduxForm, Field, InjectedFormProps} from "redux-form";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utils/validators/validators";
 import {TextArea} from "../../common/FormsControls/FormsControls";
 
@@ -18,7 +18,23 @@ type PostFormDataType = {
     newPostText: string
 }
 
-export const MyPosts = (props: PostsTypeArray) => {
+// componentDidUpdate(prevProps: Readonly<PostsTypeArray>, prevState: Readonly<{}>, snapshot?: any) {
+//     console.log('RENDER')
+// }
+//
+// componentDidMount() {
+//     setTimeout(() => {
+//      this.setState({a: 12});
+//     }, 3000)
+// }
+//
+// shouldComponentUpdate(nextProps: Readonly<PostsTypeArray>, nextState: Readonly<{}>, nextContext: any): boolean {
+//     return nextProps != this.props || nextState != this.state;
+// }    inside component MyPosts
+
+export const MyPosts = React.memo((props: PostsTypeArray) => {
+
+    console.log('RENDER YO')
 
     const {posts} = props
     const posts1 = posts.map(p => {
@@ -40,15 +56,19 @@ export const MyPosts = (props: PostsTypeArray) => {
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
-                <AppNewPostFormRedux onSubmit={onAddPost}/>
+            <AppNewPostFormRedux onSubmit={onAddPost}/>
             <div className={s.posts}> {posts1}</div>
         </div>
     )
-}
+
+});
 
 const maxLength10 =  maxLengthCreator(10);
 
 const AppNewPostForm: React.FC<InjectedFormProps<PostFormDataType>> = (props) => {
+
+
+
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
