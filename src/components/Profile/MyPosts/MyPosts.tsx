@@ -36,18 +36,13 @@ export const MyPosts = React.memo((props: PostsTypeArray) => {
 
     console.log('RENDER YO')
 
-    const {posts} = props
-    const posts1 = posts.map(p => {
+    const postsElements =
+        [...props.posts]
+        .reverse()
+        .map(p => {
         return <Post key={p.id} message={p.message}/>
 
     })
-
-    // const addPostHandler = () => {
-    //     addPost(newPostText)
-    // }
-    // const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    //     updateNewPostText(e.currentTarget.value)
-    // }
 
     let onAddPost = (values: PostFormDataType) => {
         props.addPost(values.newPostText);
@@ -57,7 +52,7 @@ export const MyPosts = React.memo((props: PostsTypeArray) => {
         <div className={s.postsBlock}>
             <h3>My posts</h3>
             <AppNewPostFormRedux onSubmit={onAddPost}/>
-            <div className={s.posts}> {posts1}</div>
+            <div className={s.posts}> {postsElements}</div>
         </div>
     )
 
