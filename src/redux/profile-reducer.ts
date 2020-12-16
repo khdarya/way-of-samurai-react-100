@@ -6,6 +6,7 @@ const ADD_POST = 'ADD-POST';
 //const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
 const SET_STATUS = 'SET-STATUS'
+const DELETE_POST = 'DELETE-POST'
 
 export type ProfilePropType = {
     userId: number
@@ -40,7 +41,7 @@ let initialState = {
     status: ""
 }
 
-type InitialStateType = typeof initialState
+export type InitialStateType = typeof initialState
 //type ActionsTypes = InferActionsTypes<typeof actions>
 
 
@@ -67,13 +68,16 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
         case SET_USER_PROFILE: {
             return {...state, profile: action.profile}
         }
+        case DELETE_POST: {
+            return {...state, posts: state.posts.filter(p => p.id != action.postId)}
+        }
         default:
             return state;
     }
 
     return state;
 }
-type ActionsType = AddPostActionCreatorType | SetUserProfileACType | SetStatusActionType
+type ActionsType = AddPostActionCreatorType | SetUserProfileACType | SetStatusActionType | DeletePostStatus
 
 type AddPostActionCreatorType = {
     type: typeof ADD_POST
@@ -88,11 +92,16 @@ type SetStatusActionType = {
     type: typeof SET_STATUS
     status: string
 }
+type DeletePostStatus = {
+    type: typeof DELETE_POST
+    postId: number
+}
 
 export const addPost = (message: string): AddPostActionCreatorType => ({type: ADD_POST, message} as const)
 //export const updateNewPostText = (newText: string): UpdateNewPostTextActionCreatorType => ({type: UPDATE_NEW_POST_TEXT, newText} as const)
 export const setUserProfile = (profile: ProfilePropType): SetUserProfileACType => ({type: SET_USER_PROFILE, profile} as const)
 export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS, status} as const)
+export const deletePost = (postId: number): any => ({type: DELETE_POST, postId} as const)
 
 
 export const getUserProfile = (userId: number) => {
