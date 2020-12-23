@@ -171,28 +171,40 @@ export const requestUsers = (page: number, pageSize: number) => {
             });
     }
 }
+
+const followUnfollow = async (dispatch: Dispatch, userId: number, apiMethod: any, actionCreator: any) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    let response = await apiMethod(userId)
+    if (response.data.resultCode == 0) {
+        dispatch(actionCreator(userId))
+    }
+    dispatch(toggleFollowingProgress(false, userId));
+}
+
 export const follow = (userId: number) => {
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        usersAPI.follow(userId)
-            .then(response => {
-                if (response.data.resultCode == 0) {
-                    dispatch(followSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(false, userId));
-            });
+    return async (dispatch: Dispatch) => {
+        let apiMethod = usersAPI.follow.bind(usersAPI);
+        let actionCreator = followSuccess;
+        followUnfollow(dispatch, userId, apiMethod, actionCreator)
+
+        // dispatch(toggleFollowingProgress(true, userId));
+        // let response = await apiMethod(userId)
+        //         if (response.data.resultCode == 0) {
+        //             dispatch(actionCreator(userId))
+        //         }
+        //         dispatch(toggleFollowingProgress(false, userId));
     }
 }
 export const unfollow = (userId: number) => {
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        usersAPI.unfollow(userId)
-            .then(response => {
-                if (response.data.resultCode == 0) {
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(false, userId));
-            });
+    return async (dispatch: Dispatch) => {
+        followUnfollow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess)
+
+        // dispatch(toggleFollowingProgress(true, userId));
+        // let response = await apiMethod(userId)
+        //         if (response.data.resultCode == 0) {
+        //             dispatch(actionCreator(userId))
+        //         }
+        //         dispatch(toggleFollowingProgress(false, userId));
     }
 }
 

@@ -40,20 +40,16 @@ export const setAuthUserData = (userId: string | null, email: string | null, log
 } as const)
 
 
-export const getAuthUserData = () => {
-    return (dispatch: Dispatch) =>
-        authAPI.me()
-            .then(response => {
+export const getAuthUserData = () => async (dispatch: Dispatch) => {
+       let response =  await authAPI.me();
                 if (response.data.resultCode === 0) {
                     let {id, email, login} = response.data.data
                     dispatch(setAuthUserData(id, email, login, true));
                 }
-            });
 
 }
-export const login = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch<any>) => {
-        authAPI.login(email, password, rememberMe)
-            .then(response => {
+export const login = (email: string, password: string, rememberMe: boolean) => async (dispatch: Dispatch<any>) => {
+     let response = await authAPI.login(email, password, rememberMe);
                 if (response.data.resultCode === 0) {
                    dispatch(getAuthUserData())
                 } else {
@@ -62,7 +58,6 @@ export const login = (email: string, password: string, rememberMe: boolean) => (
                        : "Some error";
                     dispatch(stopSubmit("login", {_error: message}));
                 }
-            });
 }
 
 export const logout = () => (dispatch: Dispatch<any>) => {
