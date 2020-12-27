@@ -29,7 +29,7 @@ type locationType = {
 
 let initialState = {
     users: [] as Array<UsersPropType>,
-    pageSize: 88,
+    pageSize: 10,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
