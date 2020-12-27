@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
+import { HashRouter, Route, Switch, withRouter} from 'react-router-dom';
 import Navbar from "./components/Navbar/Navbar";
 import UsersContainer from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -70,11 +70,12 @@ let AppContainer = compose<any>(
     connect(mapStateToProps, {initializeApp}))(App) as React.ComponentClass;
 
 const SamuraiTSApp = () => {
-    return <BrowserRouter>
+    return <HashRouter>
+    {/*return <BrowserRouter basename={process.env.PUBLIC_URL}>*/}
         <Provider store={store}>
             <AppContainer/>
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
 }
 
 export default SamuraiTSApp;

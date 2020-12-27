@@ -1,4 +1,10 @@
-import profileReducer, {addPost, deletePost, InitialStateType, PostsPropType, ProfilePropType} from "./profile-reducer";
+import profileReducer, {
+    addPost,
+    deletePost,
+    InitialStateType,
+    PostsPropType,
+    UserProfileType
+} from "./profile-reducer";
 
 //let posts: Array<PostsPropType> = [];
 let postId1: number
@@ -16,7 +22,7 @@ beforeEach(() => {
             {id: 3, message: 'Bla', likesCount: 11},
             {id: 4, message: 'Dada', likesCount: 14}
         ] as Array<PostsPropType>,
-        profile: null as null | ProfilePropType,
+        profile: null as UserProfileType | null,
         status: '' as string
     }
 

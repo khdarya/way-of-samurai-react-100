@@ -10,7 +10,7 @@ let initialState = {
     email: null as string | null,
     login: null as string | null,
     isAuth: false,
-    userId: null as (string | null)  //
+    userId: null as (string | null)
 }
 
 type InitialStateType = typeof initialState

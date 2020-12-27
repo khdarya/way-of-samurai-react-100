@@ -3,24 +3,54 @@ import {Dispatch} from "redux";
 import {profileAPI, usersAPI} from "../api/api";
 
 const ADD_POST = 'ADD-POST';
-//const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
 const SET_STATUS = 'SET-STATUS'
 const DELETE_POST = 'DELETE-POST'
+const UPDATE_PHOTO = 'UPDATE_PHOTO'
 
-export type ProfilePropType = {
-    userId: number
+// export type ProfilePropType = {
+//     userId: number
+//     lookingForAJob: boolean
+//     lookingForAJobDescription: string
+//     fullName: string
+//     contacts: {
+//         github: string
+//         website: string
+//     }
+//     photos: {
+//         small: string
+//         large: string
+//     }
+// }
+
+export type UserProfilePhotosType = {
+    small: string
+    large: string
+}
+export type PostDataType = {
+    id: string
+    message: string
+    likes: number
+}
+export type contactsType = {
+    facebook: string
+    website: string
+    vk: string
+    twitter: string
+    instagram: string
+    youtube: string
+    github: string
+    mainLink: string
+}
+
+export type UserProfileType = {
+    aboutMe: string
+    contacts: contactsType
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
-    contacts: {
-        github: string
-        website: string
-    }
-    photos: {
-        small: string
-        large: string
-    }
+    userId: number
+    photos: UserProfilePhotosType
 }
 
 export type PostsPropType = {
@@ -30,14 +60,13 @@ export type PostsPropType = {
 }
 
 let initialState = {
- //   newPostText: '',
     posts: [
         {id: 1, message: 'Hi how are you?', likesCount: 12},
         {id: 2, message: 'It\'s my first post', likesCount: 10},
         {id: 3, message: 'Bla', likesCount: 11},
         {id: 4, message: 'Dada', likesCount: 14}
     ] as Array<PostsPropType>,
-    profile: null as null | ProfilePropType,
+    profile: null as null | UserProfileType,
     status: ""
 }
 
@@ -71,13 +100,16 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
         case DELETE_POST: {
             return {...state, posts: state.posts.filter(p => p.id != action.postId)}
         }
+        case UPDATE_PHOTO: {
+            return {...state, profile: {...state.profile, photos: action.photos} as UserProfileType}
+        }
         default:
             return state;
     }
 
     return state;
 }
-type ActionsType = AddPostActionCreatorType | SetUserProfileACType | SetStatusActionType | DeletePostStatus
+type ActionsType = AddPostActionCreatorType | SetUserProfileACType | SetStatusActionType | DeletePostStatus | UpdatePhotoType
 
 type AddPostActionCreatorType = {
     type: typeof ADD_POST
@@ -86,7 +118,7 @@ type AddPostActionCreatorType = {
 
 type SetUserProfileACType = {
     type: typeof SET_USER_PROFILE
-    profile: ProfilePropType
+    profile: UserProfileType
 }
 type SetStatusActionType = {
     type: typeof SET_STATUS
@@ -96,12 +128,17 @@ type DeletePostStatus = {
     type: typeof DELETE_POST
     postId: number
 }
+type UpdatePhotoType = {
+    type: typeof UPDATE_PHOTO
+    photos: UserProfilePhotosType
+}
 
 export const addPost = (message: string): AddPostActionCreatorType => ({type: ADD_POST, message} as const)
 //export const updateNewPostText = (newText: string): UpdateNewPostTextActionCreatorType => ({type: UPDATE_NEW_POST_TEXT, newText} as const)
-export const setUserProfile = (profile: ProfilePropType): SetUserProfileACType => ({type: SET_USER_PROFILE, profile} as const)
+export const setUserProfile = (profile: UserProfileType): SetUserProfileACType => ({type: SET_USER_PROFILE, profile} as const)
 export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS, status} as const)
 export const deletePost = (postId: number): any => ({type: DELETE_POST, postId} as const)
+export const updatePhotoAC = (photos: UserProfilePhotosType) => ({ type: UPDATE_PHOTO, photos } as const)
 
 
 export const getUserProfile = (userId: number) => {
@@ -130,4 +167,11 @@ export const updateStatus = (status: string) => {
             });
     }
 }
+export const updatePhoto = (file: File) => async (dispatch: Dispatch) => {
+    let response = await profileAPI.updatePhoto(file)
+    if (response.resultCode === 0) {
+        dispatch(updatePhotoAC(response.data.photos))
+    }
+}
+
 export default profileReducer;
