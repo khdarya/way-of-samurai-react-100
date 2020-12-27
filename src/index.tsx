@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import store from './redux/redux-store';
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
+import SamuraiTSApp from "./App";
 
 let h1 = document.createElement("h1");
 h1.innerHTML = 'Hello';
@@ -19,14 +20,7 @@ React.createElement('h1', [React.createElement(App)])
 //     store.dispatch({type: "FAKE"})
 // }, 1000);
 
-ReactDOM.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
-    </Provider>,
-    document.getElementById('root')
-);
+ReactDOM.render(<SamuraiTSApp/>, document.getElementById('root'));
 
 
 /*    ReactDOM.render(
