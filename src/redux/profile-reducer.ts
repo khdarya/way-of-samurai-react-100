@@ -1,4 +1,3 @@
-import {InferActionsTypes} from "./redux-store";
 import {Dispatch} from "redux";
 import {profileAPI, usersAPI} from "../api/api";
 
@@ -66,7 +65,7 @@ let initialState = {
         {id: 3, message: 'Bla', likesCount: 11},
         {id: 4, message: 'Dada', likesCount: 14}
     ] as Array<PostsPropType>,
-    profile: null as null | UserProfileType,
+    profile: null as UserProfileType | null,
     status: ""
 }
 
@@ -85,7 +84,6 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
             };
             return {
                 ...state,
-               // newPostText: '',
                 posts: [newPost, ...state.posts]
             }
         }
@@ -134,7 +132,6 @@ type UpdatePhotoType = {
 }
 
 export const addPost = (message: string): AddPostActionCreatorType => ({type: ADD_POST, message} as const)
-//export const updateNewPostText = (newText: string): UpdateNewPostTextActionCreatorType => ({type: UPDATE_NEW_POST_TEXT, newText} as const)
 export const setUserProfile = (profile: UserProfileType): SetUserProfileACType => ({type: SET_USER_PROFILE, profile} as const)
 export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS, status} as const)
 export const deletePost = (postId: number): any => ({type: DELETE_POST, postId} as const)

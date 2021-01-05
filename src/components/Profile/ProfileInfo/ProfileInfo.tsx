@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import s from './ProfileInfo.module.css';
-import {UserProfileType} from "../../../redux/profile-reducer";
+import {contactsType, UserProfileType} from "../../../redux/profile-reducer";
 import Preloader from "../../common/Preloader/Preloader";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import usersPhoto from "../../../assets/images/user.png";
 
 type ProfileInfoType = {
-    profile: UserProfileType  | null
+    profile: UserProfileType | null
     status: string
     updateStatus: (status: string) => void
     isOwner: boolean
@@ -32,20 +32,38 @@ const ProfileInfo = (props: ProfileInfoType) => {
 
     return (
         <div>
-            {/*<div>*/}
-            {/*    <img src='https://www.pbs.org/wgbh/nova/media/images/sting-ray-city-grand-cayman-1.width-800.jpg'/>*/}
-            {/*</div>*/}
             <div className={s.descriptionBlock}>
-                {/*<img src={props.profile.photos.large ? props.profile.photos.large :photo }/>*/}
                 <img src={props.profile.photos.large || usersPhoto} className={s.mainPhoto}/>
                 {props.isOwner && <input type="file" onChange={mainPhotoSelected}/>}
+
+                <div>Full Name: {props.profile.fullName}</div>
+                <div>Looking for a job: {props.profile.lookingForAJob ? "no" : "yes"}</div>
+                {props.profile.lookingForAJob &&
+                <div>My professional skills: {props.profile.lookingForAJobDescription}</div>
+                }
+                <div>About me: {props.profile.aboutMe}</div>
+                {/*<div>Contacts: {Object*/}
+                {/*    .keys (props.profile.contacts)*/}
+                {/*    .map((k) => {*/}
+                {/*        return <Contact key={k}*/}
+                {/*                 contactTitle={k}*/}
+                {/*                 contactValue={props.profile.contacts[k as keyof contactsType]}/>*/}
+                {/*    })}*/}
+                {/*</div>*/}
+
                 <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
 
             </div>
-
         </div>
-
     )
-
 }
+
+type ContactType = {
+    contactTitle: string
+    contactValue: string
+}
+export const Contact = (props: ContactType) => {
+    return <div>{props.contactTitle} : {props.contactValue}</div>
+}
+
 export default ProfileInfo;
