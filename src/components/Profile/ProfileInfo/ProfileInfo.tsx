@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import s from './ProfileInfo.module.css';
-import {contactsType, UserProfileType} from "../../../redux/profile-reducer";
+import {UserProfileType} from "../../../redux/profile-reducer";
 import Preloader from "../../common/Preloader/Preloader";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import usersPhoto from "../../../assets/images/user.png";
+import ProfileDataReduxForm from "./ProfileDataForm";
+import {ProfileData} from "./ProfileData";
 
 type ProfileInfoType = {
     profile: UserProfileType | null
@@ -11,11 +13,12 @@ type ProfileInfoType = {
     updateStatus: (status: string) => void
     isOwner: boolean
     savePhoto: (file: File) => void
+    saveProfile: (profile: UserProfileType) => Promise<any>
 }
 
 const ProfileInfo = (props: ProfileInfoType) => {
 
-    const [editMode, setEditMode] = useState(false)
+    const [editMode, setEditMode] = useState(false);
 
     if (!props.profile) {
         return <Preloader/>
@@ -30,26 +33,23 @@ const ProfileInfo = (props: ProfileInfoType) => {
 
     const toEditMode = () => setEditMode(true)
 
+    const onSubmit = (formData: UserProfileType) => {
+        props.saveProfile(formData).then(() => setEditMode(false))
+    }
+
     return (
         <div>
             <div className={s.descriptionBlock}>
-                <img src={props.profile.photos.large || usersPhoto} className={s.mainPhoto}/>
+                <img src={props.profile.photos.large || usersPhoto} className={s.mainPhoto}
+                />
                 {props.isOwner && <input type="file" onChange={mainPhotoSelected}/>}
 
-                <div>Full Name: {props.profile.fullName}</div>
-                <div>Looking for a job: {props.profile.lookingForAJob ? "no" : "yes"}</div>
-                {props.profile.lookingForAJob &&
-                <div>My professional skills: {props.profile.lookingForAJobDescription}</div>
-                }
-                <div>About me: {props.profile.aboutMe}</div>
-                {/*<div>Contacts: {Object*/}
-                {/*    .keys (props.profile.contacts)*/}
-                {/*    .map((k) => {*/}
-                {/*        return <Contact key={k}*/}
-                {/*                 contactTitle={k}*/}
-                {/*                 contactValue={props.profile.contacts[k as keyof contactsType]}/>*/}
-                {/*    })}*/}
-                {/*</div>*/}
+                {editMode
+                    ? <ProfileDataReduxForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit} />
+                    : <ProfileData toEditMode={toEditMode}
+                                   profile={props.profile}
+                                   isOwner={props.isOwner}
+                    />}
 
                 <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
 
@@ -58,12 +58,5 @@ const ProfileInfo = (props: ProfileInfoType) => {
     )
 }
 
-type ContactType = {
-    contactTitle: string
-    contactValue: string
-}
-export const Contact = (props: ContactType) => {
-    return <div>{props.contactTitle} : {props.contactValue}</div>
-}
 
 export default ProfileInfo;

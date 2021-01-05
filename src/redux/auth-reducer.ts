@@ -6,11 +6,10 @@ import {stopSubmit} from "redux-form";
 const SET_AUTH_USER_DATA = 'SET-AUTH-USER-DATA';
 
 let initialState = {
-   // id: null as (number | null),
     email: null as string | null,
     login: null as string | null,
     isAuth: false,
-    userId: null as (string | null)
+    userId: null as (number | null)
 }
 
 type InitialStateType = typeof initialState

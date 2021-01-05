@@ -1,5 +1,9 @@
+import {v1} from 'uuid';
 import {Dispatch} from "redux";
 import {profileAPI, usersAPI} from "../api/api";
+import {FormAction, stopSubmit} from "redux-form";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
@@ -7,30 +11,12 @@ const SET_STATUS = 'SET-STATUS'
 const DELETE_POST = 'DELETE-POST'
 const UPDATE_PHOTO = 'UPDATE_PHOTO'
 
-// export type ProfilePropType = {
-//     userId: number
-//     lookingForAJob: boolean
-//     lookingForAJobDescription: string
-//     fullName: string
-//     contacts: {
-//         github: string
-//         website: string
-//     }
-//     photos: {
-//         small: string
-//         large: string
-//     }
-// }
 
 export type UserProfilePhotosType = {
     small: string
     large: string
 }
-export type PostDataType = {
-    id: string
-    message: string
-    likes: number
-}
+
 export type contactsType = {
     facebook: string
     website: string
@@ -53,17 +39,17 @@ export type UserProfileType = {
 }
 
 export type PostsPropType = {
-    id: number
+    id: string
     message: string
     likesCount: number
 }
 
 let initialState = {
     posts: [
-        {id: 1, message: 'Hi how are you?', likesCount: 12},
-        {id: 2, message: 'It\'s my first post', likesCount: 10},
-        {id: 3, message: 'Bla', likesCount: 11},
-        {id: 4, message: 'Dada', likesCount: 14}
+        {id: v1(), message: 'Hi how are you?', likesCount: 12},
+        {id: v1(), message: 'It\'s my first post', likesCount: 10},
+        {id: v1(), message: 'Bla', likesCount: 11},
+        {id: v1(), message: 'Dada', likesCount: 14}
     ] as Array<PostsPropType>,
     profile: null as UserProfileType | null,
     status: ""
@@ -78,7 +64,7 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
     switch (action.type) {
         case ADD_POST: {
             let newPost = {
-                id: new Date().getTime(),
+                id: v1(),
                 message: action.message,
                 likesCount: 0
             };
@@ -95,9 +81,9 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
         case SET_USER_PROFILE: {
             return {...state, profile: action.profile}
         }
-        case DELETE_POST: {
-            return {...state, posts: state.posts.filter(p => p.id != action.postId)}
-        }
+        // case DELETE_POST: {
+        //     return {...state, posts: state.posts.filter(p => p.id != action.postId)}
+        // }
         case UPDATE_PHOTO: {
             return {...state, profile: {...state.profile, photos: action.photos} as UserProfileType}
         }
@@ -107,7 +93,7 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
 
     return state;
 }
-type ActionsType = AddPostActionCreatorType | SetUserProfileACType | SetStatusActionType | DeletePostStatus | UpdatePhotoType
+type ActionsType = AddPostActionCreatorType | SetUserProfileACType | SetStatusActionType | UpdatePhotoType
 
 type AddPostActionCreatorType = {
     type: typeof ADD_POST
@@ -122,10 +108,10 @@ type SetStatusActionType = {
     type: typeof SET_STATUS
     status: string
 }
-type DeletePostStatus = {
-    type: typeof DELETE_POST
-    postId: number
-}
+// type DeletePostStatus = {
+//     type: typeof DELETE_POST
+//     postId: number
+// }
 type UpdatePhotoType = {
     type: typeof UPDATE_PHOTO
     photos: UserProfilePhotosType
@@ -134,19 +120,21 @@ type UpdatePhotoType = {
 export const addPost = (message: string): AddPostActionCreatorType => ({type: ADD_POST, message} as const)
 export const setUserProfile = (profile: UserProfileType): SetUserProfileACType => ({type: SET_USER_PROFILE, profile} as const)
 export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS, status} as const)
-export const deletePost = (postId: number): any => ({type: DELETE_POST, postId} as const)
+// export const deletePost = (postId: number): any => ({type: DELETE_POST, postId} as const)
 export const updatePhotoAC = (photos: UserProfilePhotosType) => ({ type: UPDATE_PHOTO, photos } as const)
 
 
-export const getUserProfile = (userId: number) => {
+type thunkType = ThunkAction<void, AppStateType, unknown, ActionsType | FormAction>
+
+export const getUserProfile = (userId: number | null): thunkType => {
     return (dispatch: Dispatch) => {
-        usersAPI.getProfile(userId)
+        profileAPI.getProfile(userId)
             .then(response => {
                 dispatch(setUserProfile(response.data));
             });
     }
 }
-export const getStatus = (userId: number) => {
+export const getStatus = (userId: number | null) => {
     return (dispatch: Dispatch) => {
         profileAPI.getStatus(userId)
             .then(response => {
@@ -170,5 +158,21 @@ export const updatePhoto = (file: File) => async (dispatch: Dispatch) => {
         dispatch(updatePhotoAC(response.data.photos))
     }
 }
+
+export const saveProfileTC = (profile: UserProfileType): thunkType =>
+    async (dispatch, getState) => {
+        let userId = getState().auth.userId;
+        let response = await profileAPI.saveProfile(profile)
+        if (response.resultCode === 0) {
+            if(userId !== null){
+                dispatch(getUserProfile(userId))
+            } else {
+                throw new Error("userId can't be null")
+            }
+        } else {
+            dispatch(stopSubmit('edit-profile', {_error: response.messages[0] }))
+            return Promise.reject(response.messages[0])
+        }
+    }
 
 export default profileReducer;
